@@ -20,6 +20,9 @@ FROM node:20 AS production-stage
 
 WORKDIR /app
 
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
