@@ -1,5 +1,5 @@
 # Step 1: Build the Angular front-end
-FROM node:16 AS build-stage
+FROM node:20 AS build-stage
 
 WORKDIR /app
 
@@ -34,7 +34,8 @@ COPY server.js .
 
 # Expose the application port
 EXPOSE 3000
+EXPOSE 4200
 
 # Start the Node.js server
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
 
