@@ -1,5 +1,5 @@
 # Step 1: Build the Angular front-end
-FROM node:20 AS build-stage
+FROM node:20
 
 WORKDIR /app
 
