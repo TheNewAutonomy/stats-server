@@ -52,31 +52,7 @@ wss.on('connection', (ws, req) => {
     });
   } else {
     // Handle client connection (e.g., Geth nodes)
-    const clientId = `client_${Date.now()}`;
-    clients.set(clientId, { ws, stats: {} });
-    console.log(`New client connected: ${clientId}`);
-
-    // Function to update stats from Geth
-    async function updateStats(id, newStats) {
-      console.log('Stats Id: ', id);
-      console.log(newStats);
-      try {
-        const client = clients.get(id);
-        if (client) {
-          client.stats = newStats;
-          console.log('Updated stats for', id, ':', newStats);
-          // Notify all dashboards of the updated stats
-          const updatedData = JSON.stringify({ id, stats: newStats });
-          dashboards.forEach((dashboard) => {
-            dashboard.send(updatedData);
-          });
-        } else {
-          console.error('Client not found for id:', id);
-        }
-      } catch (error) {
-        console.error('Error updating stats:', error);
-      }
-    }
+    let clientId = null;
 
     // Event listener for receiving messages from clients
     ws.on('message', (message) => {
@@ -87,20 +63,49 @@ wss.on('connection', (ws, req) => {
         if (parsedMessage.method && parsedMessage.params) {
           const { method, params } = parsedMessage;
           switch (method) {
-            case 'ready':
-              console.log(`Client ${clientId} is ready`);
+            case 'hello':
+              // Set clientId from the hello message
+              if (params && params.id) {
+                clientId = params.id;
+
+                // If a client with this id already exists, replace it with the new connection
+                if (clients.has(clientId)) {
+                  console.log(`Client ${clientId} reconnected. Replacing old connection.`);
+                  clients.get(clientId).ws.close();
+                }
+
+                clients.set(clientId, { ws, stats: {} });
+                console.log(`New client registered: ${clientId}`);
+              } else {
+                console.error('Hello message does not contain an id.');
+              }
               break;
+
+            case 'ready':
+              if (clientId) {
+                console.log(`Client ${clientId} is ready`);
+              } else {
+                console.error('Client ID not set. Ignoring ready message.');
+              }
+              break;
+
             case 'stats':
-              if (params && typeof params === 'object' && params.stats) {
+              if (clientId && params && typeof params === 'object' && params.stats) {
                 updateStats(clientId, params.stats);
                 console.log(`Received stats from ${clientId}:`, params.stats);
               } else {
                 console.log('Invalid stats message format:', params);
               }
               break;
+
             case 'node-ping':
-              console.log(`Received node-ping from ${clientId}:`, params);
+              if (clientId) {
+                console.log(`Received node-ping from ${clientId}:`, params);
+              } else {
+                console.error('Client ID not set. Ignoring node-ping message.');
+              }
               break;
+
             default:
               console.log('Unknown message type:', method);
           }
@@ -114,13 +119,15 @@ wss.on('connection', (ws, req) => {
 
     // Event listener for client disconnect
     ws.on('close', () => {
-      console.log(`Client disconnected: ${clientId}`);
-      clients.delete(clientId);
-      // Notify dashboards that the client has disconnected
-      const disconnectData = JSON.stringify({ id: clientId, disconnected: true });
-      dashboards.forEach((dashboard) => {
-        dashboard.send(disconnectData);
-      });
+      if (clientId) {
+        console.log(`Client disconnected: ${clientId}`);
+        clients.delete(clientId);
+        // Notify dashboards that the client has disconnected
+        const disconnectData = JSON.stringify({ id: clientId, disconnected: true });
+        dashboards.forEach((dashboard) => {
+          dashboard.send(disconnectData);
+        });
+      }
     });
 
     // Event listener for errors
@@ -135,11 +142,32 @@ server.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
 });
 
-// Function to display connected clients and their stats
+// Function to update client stats and notify dashboards
+async function updateStats(id, newStats) {
+  console.log('Stats Id:', id);
+  console.log(newStats);
+  try {
+    const client = clients.get(id);
+    if (client) {
+      client.stats = newStats;
+      console.log('Updated stats for', id, ':', newStats);
+      // Notify all dashboards of the updated stats
+      const updatedData = JSON.stringify({ id, stats: newStats });
+      dashboards.forEach((dashboard) => {
+        dashboard.send(updatedData);
+      });
+    } else {
+      console.error('Client not found for id:', id);
+    }
+  } catch (error) {
+    console.error('Error updating stats:', error);
+  }
+}
+
+// Function to display connected clients and their stats periodically
 setInterval(() => {
   console.log('Connected clients and their stats:');
   clients.forEach((client, id) => {
     console.log(`Client ID: ${id}, Stats:`, client.stats);
   });
 }, 10000);
-
