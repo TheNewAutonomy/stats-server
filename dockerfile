@@ -40,4 +40,4 @@ EXPOSE 3000
 EXPOSE 4200
 
 # Start the Node.js server
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
