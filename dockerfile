@@ -1,5 +1,5 @@
 # Step 1: Build the Angular front-end
-FROM node:20
+FROM node:20 AS build-stage
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build -- --configuration production
 
 # Step 2: Set up Node.js server to serve Angular app and handle WebSocket
-FROM node:16 AS production-stage
+FROM node:20 AS production-stage
 
 WORKDIR /app
 
@@ -38,4 +38,3 @@ EXPOSE 4200
 
 # Start the Node.js server
 CMD ["npm", "start"]
-
