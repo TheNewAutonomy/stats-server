@@ -38,5 +38,9 @@ export class AppComponent implements OnInit {
       (err) => console.error('WebSocket error:', err)
     );
   }
-}
 
+  // Helper method to get the keys of the stats object for easy iteration
+  getKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+}

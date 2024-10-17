@@ -1,19 +1,55 @@
 <div class="container">
   <h1>{{ title }}</h1>
   <h2>Connected Clients and Stats</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Client ID</th>
-        <th>Stats</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let client of clients">
-        <td>{{ client.id }}</td>
-        <td>{{ client.stats | json }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="clients.length > 0; else noClients">
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Client ID</th>
+            <th>Stats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            <td>{{ client.id }}</td>
+            <td>
+              <div *ngIf="client.stats">
+                <ul class="list-unstyled">
+                  <li><strong>Active:</strong> {{ client.stats.active }}</li>
+                  <li><strong>Peers:</strong> {{ client.stats.peers }}</li>
+                  <li><strong>Pending:</strong> {{ client.stats.pending }}</li>
+                  <li><strong>Gas Price:</strong> {{ client.stats.gasPrice }}</li>
+                  <li>
+                    <strong>Block:</strong>
+                    <ul>
+                      <li><strong>Number:</strong> {{ client.stats.block.number }}</li>
+                      <li><strong>Difficulty:</strong> {{ client.stats.block.difficulty }}</li>
+                      <li><strong>Gas Used:</strong> {{ client.stats.block.gasUsed }}</li>
+                      <li><strong>Hash:</strong> {{ client.stats.block.hash }}</li>
+                      <li><strong>Total Difficulty:</strong> {{ client.stats.block.totalDifficulty }}</li>
+                      <li>
+                        <strong>Transactions:</strong>
+                        <ul>
+                          <li *ngFor="let tx of client.stats.block.transactions">{{ tx }}</li>
+                        </ul>
+                      </li>
+                      <li><strong>Uncles:</strong> {{ client.stats.block.uncles.length }}</li>
+                    </ul>
+                  </li>
+                  <li><strong>Syncing:</strong> {{ client.stats.syncing }}</li>
+                  <li><strong>Uptime:</strong> {{ client.stats.uptime }}</li>
+                  <li><strong>Block Transaction Count:</strong> {{ client.stats.blockTransactionCount }}</li>
+                  <li><strong>Block Uncle Count:</strong> {{ client.stats.blockUncleCount }}</li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <ng-template #noClients>
+    <p>No clients connected at the moment.</p>
+  </ng-template>
 </div>
-
