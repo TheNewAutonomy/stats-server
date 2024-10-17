@@ -1,0 +1,19 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  <h2>Connected Clients and Stats</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Client ID</th>
+        <th>Stats</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td>{{ client.id }}</td>
+        <td>{{ client.stats | json }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
