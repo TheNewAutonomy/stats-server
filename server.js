@@ -6,6 +6,7 @@ const path = require('path');
 
 // Server configuration
 const PORT = process.env.PORT || 3000;
+console.log("Port: " + process.env.PORT);
 
 // Create an Express app
 const app = express();
