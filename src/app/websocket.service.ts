@@ -2,16 +2,14 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-
-const externalIp = process.env['EXTERNAL_IP'];
-
 export class WebSocketService {
   private socket$!: WebSocketSubject<any>;  // Use definite assignment assertion
-  private readonly SERVER_URL = `ws://${externalIp}:3000/`;
+  private readonly SERVER_URL = `ws://${environment.externalIp}:3000`;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
