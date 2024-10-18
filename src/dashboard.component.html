@@ -40,7 +40,18 @@
                   <li><strong>Syncing:</strong> {{ client.stats.syncing }}</li>
                   <li><strong>Uptime:</strong> {{ client.stats.uptime }}</li>
                   <li><strong>Block Transaction Count:</strong> {{ client.stats.blockTransactionCount }}</li>
-                  <li><strong>Block Uncle Count:</strong> {{ client.stats.blockUncleCount }}</li>
+                  
+                  <li>
+                    <strong>Validator:</strong>
+                    <ul>
+                      <li><strong>Staked Amount:</strong> {{ client.stats.validator.stakedAmount }}</li>
+                      <li><strong>Inactivity Score:</strong> {{ client.stats.validator.inactivityScore }}</li>
+                      <li><strong>Status:</strong> {{ client.stats.validator.status }}</li>
+                      <li><strong>Effective Balance:</strong> {{ client.stats.validator.effectiveBalance }}</li>
+                      <li><strong>Slashed:</strong> {{ client.stats.validator.slashed }}</li>
+                      <li><strong>Finalizing:</strong> {{ client.stats.validator.finalizing }}</li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
             </td>
