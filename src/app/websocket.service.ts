@@ -6,9 +6,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+const externalIp = process.env['EXTERNAL_IP'];
+
 export class WebSocketService {
   private socket$!: WebSocketSubject<any>;  // Use definite assignment assertion
-  private readonly SERVER_URL = `ws://${window.location.hostname}:3000/`;
+  private readonly SERVER_URL = `ws://${externalIp}:3000/`;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
