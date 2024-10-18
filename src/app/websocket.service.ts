@@ -2,18 +2,30 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable } from 'rxjs';
-import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
-  private socket$!: WebSocketSubject<any>;  // Use definite assignment assertion
-  private readonly SERVER_URL = `ws://${environment.externalIp}:3000`;
+  private socket$?: WebSocketSubject<any>;
+  private SERVER_URL!: string;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
-      // Only initialize WebSocket if in the browser environment
+      this.initializeWebSocket();
+    }
+  }
+
+  private initializeWebSocket(): void {
+    if (!this.socket$) {
+      // Dynamically construct the WebSocket URL
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname;
+      const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+      const wsPort = '3000'; // Replace with your WebSocket server port if different
+      const urlHost = wsPort ? `${host}:${wsPort}` : host;
+      this.SERVER_URL = `${protocol}//${urlHost}`;
+
       this.socket$ = webSocket(this.SERVER_URL);
     }
   }
@@ -21,6 +33,8 @@ export class WebSocketService {
   public sendMessage(message: any): void {
     if (this.socket$) {
       this.socket$.next(message);
+    } else {
+      console.warn('WebSocket is not available.');
     }
   }
 
@@ -28,4 +42,3 @@ export class WebSocketService {
     return this.socket$ ? this.socket$.asObservable() : new Observable();
   }
 }
-
