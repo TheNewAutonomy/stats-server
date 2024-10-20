@@ -1,3 +1,21 @@
+<div class="header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+  <!-- Logo on the left -->
+  <div class="logo">
+    <img src="https://pbs.twimg.com/profile_images/1799154241984143360/8UJkaTXV_400x400.jpg" alt="Vana Logo" style="height: 50px;">
+  </div>
+
+  <!-- Moksha Network title in the center -->
+  <div class="network-name">
+    <h1 style="margin: 0; color: #343a40;">Moksha Network</h1>
+  </div>
+
+  <!-- Links to Website and Documentation on the right -->
+  <div class="links">
+    <a href="https://www.vana.org/" target="_blank" style="margin-right: 20px; color: #007bff; text-decoration: none; font-weight: bold;">Website</a>
+    <a href="https://docs.vana.org/vana" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">Documentation</a>
+  </div>
+</div>
+
 <div class="container">
   <h1>{{ title }}</h1>
   <h2>Connected Clients and Stats</h2>
@@ -7,55 +25,69 @@
         <thead>
           <tr>
             <th>Client ID</th>
-            <th>Stats</th>
+            <th>Peers</th>
+            <th>Pending Txs</th>
+            <th>Block Number</th>
+            <th>Block Hash</th>
+            <th>Block Transaction Count</th>
+            <th>Gas Used</th>
+            <th>Gas Price</th>
+            <th>Syncing</th>
+            <th>Uptime</th>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Effective Balance</th>
+            <th>Slashed</th>
+            <th>Activation Eligibility Epoch</th>
+            <th>Activation Epoch</th>
+            <th>Exit Epoch</th>
+            <th>Withdrawable Epoch</th>
+            <th>Transactions</th>
           </tr>
         </thead>
         <tbody>
+          <!-- Iterating over 'clients' -->
           <tr *ngFor="let client of clients">
             <td>{{ client.id }}</td>
+            <td>{{ client.stats.peers }}</td>
+            <td>{{ client.stats.pending }}</td>
+            <td>{{ client.stats.block.number }}</td>
+            <td>{{ client.stats.block.hash }}</td>
+            <td>{{ client.stats.block.blockTransactionCount }}</td>
+            <td>{{ client.stats.block.gasUsed }}</td>
+            <td>{{ client.stats.gasPrice }}</td>
+            <td>{{ client.stats.syncing }}</td>
+            <td>{{ client.stats.uptime }}</td>
+            <td>{{ client.stats.validator.balance }}</td>
+            <td>{{ client.stats.validator.status }}</td>
+            <td>{{ client.stats.validator.effectiveBalance }}</td>
+            <td>{{ client.stats.validator.slashed }}</td>
+            <td>{{ client.stats.validator.activation_eligibility_epoch }}</td>
+            <td>{{ client.stats.validator.activation_epoch }}</td>
+            <td>{{ client.stats.validator.exit_epoch }}</td>
+            <td>{{ client.stats.validator.withdrawable_epoch }}</td>
+
+            <!-- Button to toggle transactions visibility -->
             <td>
-              <div *ngIf="client.stats">
-                <ul class="list-unstyled">
-                  <li><strong>Active:</strong> {{ client.stats.active }}</li>
-                  <li><strong>Peers:</strong> {{ client.stats.peers }}</li>
-                  <li><strong>Pending:</strong> {{ client.stats.pending }}</li>
-                  <li><strong>Gas Price:</strong> {{ client.stats.gasPrice }}</li>
-                  <li>
-                    <strong>Block:</strong>
-                    <ul>
-                      <li><strong>Number:</strong> {{ client.stats.block.number }}</li>
-                      <li><strong>Difficulty:</strong> {{ client.stats.block.difficulty }}</li>
-                      <li><strong>Gas Used:</strong> {{ client.stats.block.gasUsed }}</li>
-                      <li><strong>Hash:</strong> {{ client.stats.block.hash }}</li>
-                      <li><strong>Total Difficulty:</strong> {{ client.stats.block.totalDifficulty }}</li>
-                      <li>
-                        <strong>Transactions:</strong>
-                        <ul>
-                          <li *ngFor="let tx of client.stats.block.transactions">{{ tx }}</li>
-                        </ul>
-                      </li>
-                      <li><strong>Uncles:</strong> {{ client.stats.block.uncles.length }}</li>
-                    </ul>
-                  </li>
-                  <li><strong>Syncing:</strong> {{ client.stats.syncing }}</li>
-                  <li><strong>Uptime:</strong> {{ client.stats.uptime }}</li>
-                  <li><strong>Block Transaction Count:</strong> {{ client.stats.blockTransactionCount }}</li>
-                  
-                  <li>
-                    <strong>Validator:</strong>
-                    <ul>
-                      <li><strong>Staked Amount:</strong> {{ client.stats.validator.stakedAmount }}</li>
-                      <li><strong>Inactivity Score:</strong> {{ client.stats.validator.inactivityScore }}</li>
-                      <li><strong>Status:</strong> {{ client.stats.validator.status }}</li>
-                      <li><strong>Effective Balance:</strong> {{ client.stats.validator.effectiveBalance }}</li>
-                      <li><strong>Slashed:</strong> {{ client.stats.validator.slashed }}</li>
-                      <li><strong>Finalizing:</strong> {{ client.stats.validator.finalizing }}</li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
+              <button (click)="client.showTransactions = !client.showTransactions">
+                {{ client.showTransactions ? 'Hide' : 'Show' }} Transactions
+              </button>
             </td>
           </tr>
+
+          <!-- Displaying transactions in a separate row -->
+          <tr *ngFor="let client of clients">
+            <ng-container *ngIf="client.showTransactions">
+              <td colspan="19"> <!-- Full-width for the transactions -->
+                <ul>
+                  <li *ngFor="let tx of client.stats.block.transactions">
+                    {{ tx }}
+                  </li>
+                </ul>
+              </td>
+            </ng-container>
+          </tr>
+
         </tbody>
       </table>
     </div>

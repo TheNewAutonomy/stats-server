@@ -11,7 +11,7 @@ import { WebSocketService } from './websocket.service';  // Ensure this is corre
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'stats-dashboard';
+  title = 'Moksha network';
   clients: any[] = [];
 
   constructor(private webSocketService: WebSocketService) {}

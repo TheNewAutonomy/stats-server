@@ -1,126 +1,47 @@
-/* General container styling */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1, h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  /* Table styling */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .table thead th {
-    background-color: #4CAF50;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
-  
-  .table tbody td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-    vertical-align: top;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* List styling within stats */
-  .list-unstyled {
-    padding-left: 0;
-    list-style: none;
-  }
-  
-  .list-unstyled li {
-    margin-bottom: 5px;
-  }
-  
-  /* Block section styling */
-  ul ul {
-    padding-left: 20px;
-    list-style: disc;
-  }
-  
-  ul ul li {
-    margin-bottom: 5px;
-  }
-  
-  /* Transaction styling */
-  strong {
-    color: #4CAF50;
-  }
-  
-  /* No clients message styling */
-  .no-clients-message {
-    text-align: center;
-    color: #666;
-    font-size: 1.2em;
-    margin-top: 30px;
-  }
-  
-  /* Responsive styling */
-  @media (max-width: 768px) {
-    .table thead {
-      display: none;
-    }
-  
-    .table tbody td {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: right;
-      padding: 10px 10px 10px 50%;
-      position: relative;
-    }
-  
-    .table tbody td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 10px;
-      width: calc(50% - 20px);
-      text-align: left;
-      font-weight: bold;
-      color: #333;
-    }
-  
-    .table tbody tr {
-      margin-bottom: 10px;
-      display: block;
-    }
-  }
-  
-  /* Styling for a better visual separation */
-  .table tbody td ul {
-    margin: 10px 0;
-    padding-left: 15px;
-    border-left: 3px solid #4CAF50;
-  }
-  
-  .table tbody td ul li {
-    margin: 5px 0;
-  }
-  
-  /* Header styling */
-  h2 {
-    color: #4CAF50;
-    font-weight: bold;
-  }
-  
+body {
+  background-color: #1e1e1e;
+  color: #cfd8dc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #444;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #263238;
+  color: #fff;
+}
+
+tr:hover {
+  background-color: #37474f;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: #2c3e50;
+}
+
+
+/* Optional: Add some simple foldout animation */
+tr.ng-animate {
+  transition: all 0.3s ease;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
