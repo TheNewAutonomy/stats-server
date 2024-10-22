@@ -25,6 +25,7 @@
         <thead>
           <tr>
             <th>Client ID</th>
+            <th>Latency (ms)</th> 
             <th>Peers</th>
             <th>Pending Txs</th>
             <th>Block Number</th>
@@ -38,10 +39,25 @@
             <th>Status</th>
             <th>Effective Balance</th>
             <th>Slashed</th>
-            <th>Activation Eligibility Epoch</th>
-            <th>Activation Epoch</th>
+          <!--   <th>Activation Eligibility Epoch</th> -->
+          <!--   <th>Activation Epoch</th> -->
             <th>Exit Epoch</th>
             <th>Withdrawable Epoch</th>
+            <th>Geth OS Platform</th>
+            <th>Geth OS Version</th>
+            <th>Geth CPU %</th>
+            <th>Geth Memory Usage</th>
+            <th>Geth Memory Limit</th>
+            <th>Beacon OS Platform</th>
+            <th>Beacon OS Version</th>
+            <th>Beacon CPU %</th>
+            <th>Beacon Memory Usage</th>
+            <th>Beacon Memory Limit</th>
+            <th>Validator OS Platform</th>
+            <th>Validator OS Version</th>
+            <th>Validator CPU %</th>
+            <th>Validator Memory Usage</th>
+            <th>Validator Memory Limit</th>
             <th>Transactions</th>
           </tr>
         </thead>
@@ -49,6 +65,7 @@
           <!-- Iterating over 'clients' -->
           <tr *ngFor="let client of clients">
             <td>{{ client.id }}</td>
+            <td>{{ client.stats.latency }} ms</td> 
             <td>{{ client.stats.peers }}</td>
             <td>{{ client.stats.pending }}</td>
             <td>{{ client.stats.block.number }}</td>
@@ -62,10 +79,31 @@
             <td>{{ client.stats.validator.status }}</td>
             <td>{{ client.stats.validator.effectiveBalance }}</td>
             <td>{{ client.stats.validator.slashed }}</td>
-            <td>{{ client.stats.validator.activation_eligibility_epoch }}</td>
-            <td>{{ client.stats.validator.activation_epoch }}</td>
+          <!--  <td>{{ client.stats.validator.activation_eligibility_epoch }}</td> -->
+          <!--  <td>{{ client.stats.validator.activation_epoch }}</td> -->
             <td>{{ client.stats.validator.exit_epoch }}</td>
             <td>{{ client.stats.validator.withdrawable_epoch }}</td>
+            
+            <!-- Geth container stats -->
+            <td>{{ client.stats.containers.geth.osPlatform }}</td>
+            <td>{{ client.stats.containers.geth.osVersion }}</td>
+            <td>{{ client.stats.containers.geth.cpuPercentage }}</td>
+            <td>{{ client.stats.containers.geth.memoryUsage }}</td>
+            <td>{{ client.stats.containers.geth.memoryLimit }}</td>
+
+            <!-- Beacon container stats -->
+            <td>{{ client.stats.containers.beacon.osPlatform }}</td>
+            <td>{{ client.stats.containers.beacon.osVersion }}</td>
+            <td>{{ client.stats.containers.beacon.cpuPercentage }}</td>
+            <td>{{ client.stats.containers.beacon.memoryUsage }}</td>
+            <td>{{ client.stats.containers.beacon.memoryLimit }}</td>
+
+            <!-- Validator container stats -->
+            <td>{{ client.stats.containers.validator.osPlatform }}</td>
+            <td>{{ client.stats.containers.validator.osVersion }}</td>
+            <td>{{ client.stats.containers.validator.cpuPercentage }}</td>
+            <td>{{ client.stats.containers.validator.memoryUsage }}</td>
+            <td>{{ client.stats.containers.validator.memoryLimit }}</td>
 
             <!-- Button to toggle transactions visibility -->
             <td>
@@ -78,7 +116,7 @@
           <!-- Displaying transactions in a separate row -->
           <tr *ngFor="let client of clients">
             <ng-container *ngIf="client.showTransactions">
-              <td colspan="19"> <!-- Full-width for the transactions -->
+              <td colspan="30"> <!-- Full-width for the transactions -->
                 <ul>
                   <li *ngFor="let tx of client.stats.block.transactions">
                     {{ tx }}

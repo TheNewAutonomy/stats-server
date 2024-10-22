@@ -92,6 +92,12 @@ wss.on('connection', (ws, req) => {
               }
               break;
 
+            case 'ping':
+              // Respond to ping with a pong
+              ws.send(JSON.stringify({ emit: ['pong'] }));
+              console.log(`Ping received from ${clientName}, sending pong...`);
+              break;
+
             case 'stats':
               // Handle 'stats' event
               if (clientId) {
@@ -140,8 +146,6 @@ wss.on('connection', (ws, req) => {
 
     // Function to update stats from clients
     async function updateStats(id, newStats) {
-      console.log('Stats Id: ', id);
-      console.log(newStats);
       try {
         const client = clients.get(id);
         if (client) {
