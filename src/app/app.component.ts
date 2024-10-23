@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from './websocket.service';  // Ensure this is correctly pointing to your WebSocketService
+import { environment } from '../environments/environment'; // Import the environment
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { WebSocketService } from './websocket.service';  // Ensure this is corre
 export class AppComponent implements OnInit {
   title = 'Moksha network';
   clients: any[] = [];
+  networkName: string = environment.networkName;
 
   constructor(private webSocketService: WebSocketService) {}
 

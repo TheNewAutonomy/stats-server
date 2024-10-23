@@ -38,6 +38,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -52,6 +58,14 @@
               ],
               "outputHashing": "all"
             },
+            "moksha": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.moksha.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -65,6 +79,9 @@
           "configurations": {
             "production": {
               "buildTarget": "stats-dashboard:build:production"
+            },
+            "moksha": {
+              "buildTarget": "stats-dashboard:build:moksha"
             },
             "development": {
               "buildTarget": "stats-dashboard:build:development"

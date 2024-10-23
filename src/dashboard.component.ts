@@ -1,37 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { WebSocketService } from '../websocket.service';
-import { ChangeDetectorRef } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { WebSocketService } from './app/websocket.service';  // Ensure this is correctly pointing to your WebSocketService
+import { environment } from './environments/environment'; // Import the environment
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule],  // Add CommonModule here
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class AppComponent implements OnInit {
+  title = 'Moksha network';
   clients: any[] = [];
+  networkName: string = environment.networkName;
 
-  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) { }
+  constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit(): void {
     this.webSocketService.getMessages().subscribe(
       (message) => {
         if (Array.isArray(message)) {
+          // Initial data from the server
           this.clients = message;
         } else if (message.id && message.stats) {
-          const clientIndex = this.clients.findIndex(client => client.id === message.id);
+          // Update client stats
+          const clientIndex = this.clients.findIndex((client) => client.id === message.id);
           if (clientIndex > -1) {
             this.clients[clientIndex].stats = message.stats;
           } else {
             this.clients.push(message);
           }
-          // Force Angular to detect changes after receiving data
-          this.cdr.detectChanges();
         } else if (message.disconnected) {
-          this.clients = this.clients.filter(client => client.id !== message.id);
-          this.cdr.detectChanges();  // Update the view after client is removed
+          // Remove disconnected client
+          this.clients = this.clients.filter((client) => client.id !== message.id);
         }
       },
       (err) => console.error('WebSocket error:', err)
     );
+  }
+
+  // Helper method to get the keys of the stats object for easy iteration
+  getKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
   }
 }
