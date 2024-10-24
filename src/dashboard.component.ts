@@ -12,7 +12,7 @@ import { environment } from './environments/environment'; // Import the environm
   styleUrls: ['./dashboard.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'Moksha network';
+  title = 'Network Monitor';
   clients: any[] = [];
   networkName: string = environment.networkName;
 

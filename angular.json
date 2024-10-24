@@ -66,6 +66,14 @@
                 }
               ]
             },
+            "maya": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.maya.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -82,6 +90,9 @@
             },
             "moksha": {
               "buildTarget": "stats-dashboard:build:moksha"
+            },
+            "maya": {
+              "buildTarget": "stats-dashboard:build:maya"
             },
             "development": {
               "buildTarget": "stats-dashboard:build:development"
