@@ -82,23 +82,31 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/stats-dashboard-server",
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "stats-dashboard:build:production"
-            },
-            "moksha": {
-              "buildTarget": "stats-dashboard:build"
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "maya": {
-              "buildTarget": "stats-dashboard:build"
-            },
-            "development": {
-              "buildTarget": "stats-dashboard:build:development"
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.maya.ts"
+                }
+              ]
             }
-          },
-          "defaultConfiguration": "development"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
