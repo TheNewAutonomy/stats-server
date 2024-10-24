@@ -36,7 +36,7 @@ COPY --from=build-stage /app/dist/stats-dashboard ./dist/stats-dashboard
 COPY server.js .
 
 # Expose the application port
-EXPOSE 3000 4200
+EXPOSE 80 443
 
 # Start the Node.js server
 CMD ["node", "server.js"]

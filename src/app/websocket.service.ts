@@ -18,14 +18,14 @@ export class WebSocketService {
 
   private initializeWebSocket(): void {
     if (!this.socket$) {
-      // Dynamically construct the WebSocket URL
+      // Determine the protocol (ws: for http or wss: for https)
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const host = window.location.hostname;
-      const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
-      const wsPort = '3000'; // Replace with your WebSocket server port if different
-      const urlHost = wsPort ? `${host}:${wsPort}` : host;
-      this.SERVER_URL = `${protocol}//${urlHost}`;
 
+      // For HTTP (port 80) and HTTPS (port 443), omit the port in WebSocket URL
+      this.SERVER_URL = `${protocol}//${host}`;
+
+      // Initialize WebSocket connection
       this.socket$ = webSocket(this.SERVER_URL);
     }
   }

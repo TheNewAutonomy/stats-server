@@ -5,7 +5,7 @@ const express = require('express');
 const path = require('path');
 
 // Server configuration
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
 // Create an Express app
 const app = express();
